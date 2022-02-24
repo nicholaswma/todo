@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require("dotenv").config();
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
@@ -11,7 +12,9 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 module.exports = {
   solidity: "0.8.4",
   networks: {
-    rinkeby: process.env.RINKEBY_URL,
-    accounts: [process.env.P_KEY],
+    rinkeby: {
+      url: process.env.RINKEBY_URL,
+      accounts: [process.env.P_KEY],
+    },
   },
 };
