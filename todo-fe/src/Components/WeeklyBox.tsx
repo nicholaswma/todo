@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Img, Text } from "@chakra-ui/react";
 
 function WeeklyBox({ category }: any) {
   return (
