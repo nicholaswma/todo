@@ -18,7 +18,7 @@ import abi from "./utils/Todo.json";
 declare var window: any;
 
 function App() {
-  const address = "0x7def70855769e81D662288f046F39cEF1Df9d952";
+  const address = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const [todo, setTodo] = useState<any[]>([]);
   const [test, setTest] = useState<string>("");
   const checkBrowser = async () => {
