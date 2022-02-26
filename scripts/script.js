@@ -8,10 +8,12 @@ async function main() {
 
   await todo.deployed();
   const addItem = await todo.createTask("learn solidity");
+  const addItem2 = await todo.createTask("learn solidity2");
+  const addItem3 = await todo.createTask("learn solidity3");
   await addItem.wait();
   let getItem = await todo.getTasks();
   console.log(getItem);
-  let completed = await todo.completeTask(0);
+  let completed = await todo.completeTask([0]);
   getItem = await todo.getTasks();
   console.log(getItem);
 

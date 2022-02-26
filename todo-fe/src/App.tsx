@@ -11,6 +11,7 @@ import {
 import { TriangleUpIcon } from "@chakra-ui/icons";
 import WeeklyBox from "./Components/WeeklyBox";
 import List from "./Components/List";
+import AddTodo from "./Components/AddTodo";
 import { useState, useEffect } from "react";
 import "./App.css";
 import { ethers } from "ethers";
@@ -18,9 +19,8 @@ import abi from "./utils/Todo.json";
 declare var window: any;
 
 function App() {
-  const address = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+  const address: string = "0xA12C4673b4E5B0269F81C32ae3573C72eEfa1656";
   const [todo, setTodo] = useState<any[]>([]);
-  const [test, setTest] = useState<string>("");
   const checkBrowser = async () => {
     try {
       const { ethereum } = window;
@@ -43,35 +43,14 @@ function App() {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const todoCon = new ethers.Contract(address, abi.abi, signer);
-        const getData = await todoCon.getTasks(0);
-
-        console.log(new Date(getData.date.toNumber() * 1000));
-        console.log(getData.task);
-        console.log(getData.completed);
+        const getData = await todoCon.getTasks();
+        setTodo(getData);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const sendTask = async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const todoCon = new ethers.Contract(address, abi.abi, signer);
-        const setTask = await todoCon.createTask(test);
-        console.log("mining");
-        await setTask.wait();
-        console.log(
-          `check here: https://rinkeby.etherscan.io/tx/${setTask.hash}`
-        );
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   const weekly: string[] = [
     "Weekly Activity",
     "Worked This Week",
@@ -89,14 +68,15 @@ function App() {
         paddingTop={"10rem"}
         maxW={"1920px"}
       >
-        {console.log(abi.abi)}
         <GridItem colSpan={1} background={"white"}></GridItem>
         <GridItem colSpan={4}>
           <Box h="85vh" bg="#F1F1F1" borderRadius={"25px"}>
             <Flex
               flexDir={"row"}
               justifyContent={"space-between"}
-              padding={"4rem"}
+              paddingTop={"4rem"}
+              paddingBottom={"2rem"}
+              paddingX={"4rem"}
             >
               <Box>
                 <Text fontWeight={800} fontFamily={"Poppins"} fontSize={"36px"}>
@@ -106,11 +86,7 @@ function App() {
                   Wed Feb 24 2022
                 </Text>
               </Box>
-              <Input
-                value={test}
-                onChange={(e) => setTest(e.target.value)}
-              ></Input>
-              <Button onClick={sendTask}> Send It </Button>
+
               {/* TIMER BUTTON */}
               <Flex borderRadius={"25px"} bg="white" w="320px">
                 <Center
@@ -128,16 +104,19 @@ function App() {
                 </Center>
               </Flex>
             </Flex>
-            <Flex paddingX={"4.2rem"}>
-              <List />
+            <Flex paddingX={"4rem"} paddingBottom={"14px"}>
+              <AddTodo />
+            </Flex>
+            <Flex paddingX={"4rem"} flexDir={"column"}>
+              <List data={todo} />
             </Flex>
             <Grid
               templateColumns="repeat(3, 1fr)"
               justifyContent={"space-between"}
               paddingX={"3rem"}
             >
-              {weekly.map((type: string) => (
-                <GridItem colSpan={1} padding={"1rem"}>
+              {weekly.map((type: string, index: number) => (
+                <GridItem key={index} colSpan={1} padding={"1rem"}>
                   <WeeklyBox category={type} />
                 </GridItem>
               ))}

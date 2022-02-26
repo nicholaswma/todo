@@ -1,8 +1,8 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Center, Checkbox, Flex, Text } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 
-function List() {
+function List({ data }: any) {
   return (
     <Box
       bg={"white"}
@@ -10,9 +10,20 @@ function List() {
       w={"full"}
       height={"10rem"}
       paddingTop={"1rem"}
-      paddingLeft={"2rem"}
+      paddingLeft={"4rem"}
     >
-      List
+      {data.map((ele: any, index: number) => (
+        <Flex>
+          <Checkbox
+            size="lg"
+            colorScheme="yellow"
+            paddingRight={"10px"}
+          ></Checkbox>
+          <Text fontSize={"16px"} key={index}>
+            {ele.task}
+          </Text>
+        </Flex>
+      ))}
     </Box>
   );
 }

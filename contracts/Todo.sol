@@ -17,10 +17,12 @@ contract Todo {
         ownerTask[msg.sender].push(Task({date: block.timestamp, task: _task, completed: false, index: currentCount}));
     }
 
-    function completeTask(uint _index) public  {
-        Task memory _task = ownerTask[msg.sender][_index];
-        _task.completed = true;
-        ownerTask[msg.sender][_index] = _task;
+    function completeTask(uint[] memory _index) public  {
+        for (uint i = 0; i < _index.length; i++) {
+            Task memory _task = ownerTask[msg.sender][i];
+            _task.completed = true;
+            ownerTask[msg.sender][i] = _task;
+        }
     }
 
     function getTasks() external view returns (Task[] memory) {
